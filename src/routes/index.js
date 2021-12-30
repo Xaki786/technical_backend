@@ -21,7 +21,18 @@ router.post("/", async (req, res, next) => {
     const dbSub = await Subscription.create(subsForm);
     return res.status(200).json({ data: dbSub });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+});
+
+router.get("/all", async (req, res, next) => {
+  try {
+    const subs = await Subscription.find({});
+    return res.status(200).json({ data: subs });
+  } catch (error) {
+    return res.status(500).json({
       error: "Internal Server Error",
     });
   }
