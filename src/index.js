@@ -7,6 +7,10 @@ app.use((req, res, next) => {
     message: "Success",
   });
 });
+
+app.get("/", (req, res, next) => {
+  res.send("Hello Deploy");
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Server has started!");
