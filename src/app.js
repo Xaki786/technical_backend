@@ -21,8 +21,17 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
+    console.log("=================================");
     console.log("Connected to the Database");
+    console.log("=================================");
+  })
+  .catch((err) => {
+    console.log("=================================");
+    console.log("Error", err);
+    console.log("=================================");
   });
 app.listen(PORT, () => {
+  console.log("=================================");
   console.log("Server has started!");
+  console.log("=================================");
 });
