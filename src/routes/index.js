@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
       castings: req.body.castings,
     };
     const dbSub = await Subscription.create(subsForm);
-    return res.status(200).json({ data: dbSub });
+    return res.status(200).json(dbSub);
   } catch (error) {
     return res.status(500).json({
       error: "Internal Server Error",
@@ -30,7 +30,28 @@ router.post("/", async (req, res, next) => {
 router.get("/all", async (req, res, next) => {
   try {
     const subs = await Subscription.find({});
-    return res.status(200).json({ data: subs });
+    return res.status(200).json(subs);
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+});
+
+router.get("/search", async (req, res, next) => {
+  try {
+    const { search } = req.query;
+    const searchedSubs = await Subscription.find({
+      $or: [
+        { firstname: { $regex: search, $options: "i" } },
+        { lastname: { $regex: search, $options: "i" } },
+        { profession: { $regex: search, $options: "i" } },
+      ],
+    });
+    if (!searchedSubs) {
+      res.status(404).json([]);
+    }
+    return res.status(200).json(searchedSubs);
   } catch (error) {
     return res.status(500).json({
       error: "Internal Server Error",
