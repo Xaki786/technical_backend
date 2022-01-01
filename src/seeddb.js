@@ -21,7 +21,7 @@ mongoose
 
 const seedData = async () => {
   await Subscription.deleteMany({});
-  await Subscription.insertMany(fakeSubscriptionData);
+  // await Subscription.insertMany(fakeSubscriptionData);
 };
 
 seedData().then(() => {
