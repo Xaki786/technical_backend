@@ -29,7 +29,10 @@ router.post("/", async (req, res, next) => {
 
 router.get("/all", async (req, res, next) => {
   try {
-    const subs = await Subscription.find({});
+    let query = Object.fromEntries(
+      Object.entries(req.query).filter(([_, v]) => v)
+    );
+    const subs = await Subscription.find({ ...query });
     return res.status(200).json(subs);
   } catch (error) {
     return res.status(500).json({
@@ -41,7 +44,6 @@ router.get("/all", async (req, res, next) => {
 router.get("/search", async (req, res, next) => {
   try {
     const { search } = req.query;
-
     let query = Object.fromEntries(
       Object.entries(req.query).filter(([_, v]) => v)
     );
