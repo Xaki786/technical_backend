@@ -5,6 +5,7 @@ const routes = require("./routes");
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static((__dirname, "src/public")));
 app.use("/api/subscription", routes);
 app.get("/", (req, res, next) => {
   res.send("New Hello Deploy");

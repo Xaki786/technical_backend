@@ -1,11 +1,32 @@
 const router = require("express").Router({ mergeParams: true });
 const Subscription = require("../models/Subscription");
-router.post("/", async (req, res, next) => {
-  try {
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+let path = require("path");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "src/public/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
+  },
+});
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+let upload = multer({ storage, fileFilter });
+
+router.route("/").post(upload.single("picture"), async (req, res, next) => {
+  try {   
     const subsForm = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      //  picture (type dropdown),
+      picture: "https://technical-backend.herokuapp.com/images/" + req.file.filename,
       gender: req.body.gender,
       dob: req.body.dob,
       profession: req.body.profession,
@@ -18,9 +39,11 @@ router.post("/", async (req, res, next) => {
       weight: req.body.waist,
       castings: req.body.castings,
     };
+
     const dbSub = await Subscription.create(subsForm);
     return res.status(200).json(dbSub);
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       error: "Internal Server Error",
     });
