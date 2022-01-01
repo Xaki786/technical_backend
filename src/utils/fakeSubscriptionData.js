@@ -16,7 +16,7 @@ for (let i = 0; i < 50; i++) {
   let sub = {
     firstname: "",
     lastname: "",
-    //  picture (type dropdown),
+    picture: null,
     gender: "",
     dob: new Date(),
     profession: "",
@@ -30,6 +30,7 @@ for (let i = 0; i < 50; i++) {
     castings: "",
   };
   sub.firstname = faker.name.firstName();
+  sub.picture = faker.image.image();
   sub.lastname = faker.name.lastName();
   sub.gender = faker.random.arrayElement(genderValues);
   sub.dob = faker.date.past();

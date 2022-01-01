@@ -41,11 +41,23 @@ router.get("/all", async (req, res, next) => {
 router.get("/search", async (req, res, next) => {
   try {
     const { search } = req.query;
+
+    let query = Object.fromEntries(
+      Object.entries(req.query).filter(([_, v]) => v)
+    );
+    delete query.search;
     const searchedSubs = await Subscription.find({
-      $or: [
-        { firstname: { $regex: search, $options: "i" } },
-        { lastname: { $regex: search, $options: "i" } },
-        { profession: { $regex: search, $options: "i" } },
+      $and: [
+        {
+          ...query,
+        },
+        {
+          $or: [
+            { firstname: { $regex: search, $options: "i" } },
+            { lastname: { $regex: search, $options: "i" } },
+            { profession: { $regex: search, $options: "i" } },
+          ],
+        },
       ],
     });
     if (!searchedSubs) {
@@ -53,6 +65,7 @@ router.get("/search", async (req, res, next) => {
     }
     return res.status(200).json(searchedSubs);
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       error: "Internal Server Error",
     });

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const SubscriptionSchema = new mongoose.Schema({
   firstname: String,
   lastname: String,
-  //  picture (type dropdown),
+  picture: String,
   gender: String,
   dob: Date,
   profession: String,
