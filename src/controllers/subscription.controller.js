@@ -1,12 +1,14 @@
 const { removeEmptyValues } = require("../utils/utlis");
 const Subscription = require("../models/Subscription");
+const url = "https://technical-backend.herokuapp.com";
+// const url = "http://localhost:5000";
 module.exports = {
   addSubscription: async (req, res, next) => {
     try {
       const subsForm = {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        picture: "http://localhost:5000/images/" + req.file.filename,
+        picture: `${url}/images/` + req.file.filename,
         gender: req.body.gender,
         dob: req.body.dob,
         profession: req.body.profession,
