@@ -26,7 +26,7 @@ router.route("/").post(upload.single("picture"), async (req, res, next) => {
     const subsForm = {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      picture: "https://technical-backend.herokuapp.com/images/" + req.file.filename,
+      picture: "http://localhost:5000/images/" + req.file.filename,
       gender: req.body.gender,
       dob: req.body.dob,
       profession: req.body.profession,
