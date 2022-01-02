@@ -1,28 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Subscription = require("./models/Subscription");
-const { fakeSubscriptionData } = require("./utils/fakeSubscriptionData");
 const cors = require("cors");
-const routes = require("./routes");
+const subscriptionRoutes = require("./routes/subscription.routes");
+const seedRoutes = require("./routes/seed.routes");
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static((__dirname, "src/public")));
-app.use("/api/subscription", routes);
-app.get("/api/seed-db", async (req, res, next) => {
-  try {
-    await Subscription.deleteMany({});
-    await Subscription.insertMany(fakeSubscriptionData);
-    return res.status(200).json({
-      message: "Success",
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: "Error",
-    });
-  }
-});
+app.use("/api/subscription", subscriptionRoutes);
+app.use("/api/seed-db", seedRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({
